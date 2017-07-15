@@ -1,0 +1,5 @@
+max
+z=2x+2y
+s.t
+y=x+1 x=y-1
+y=2x x=y/2
