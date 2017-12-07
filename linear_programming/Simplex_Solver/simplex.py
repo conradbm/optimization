@@ -1,3 +1,15 @@
+"""
+An LP_MODEL class object is meant to be a constructive, robust, and flexible
+linear model solver from file IO to solution.
+
+Example employment is as follows:
+
+lpSolver = LP_MODEL(<absolutePath | relativePath>, <debug>)
+lpSolver._solution # int or double
+lpSolver._optimalVariables #list or dictionary
+
+"""
+
 class LP_MODEL:
     
     # Class attributes (I.e., built inside of the class, accessible outside)
@@ -32,12 +44,16 @@ class LP_MODEL:
     #    1. path
     #    2. debug
     #
-    # Logic Map
+    # ___________________________________
+    # ____________ Logic Map ____________
+    # ___________________________________
     #
-    #   1. File IO
-    #   2. Parse raw_model_input into necessary structures
-    #   3. Update structures
-    #   4. Store
+    #   1. File IO.
+    #   2. Parse raw_model_input into necessary structures.
+    #   3. Update structures (with new variables/coeffs).
+    #   4. Merge data structures into Panda Tableau.
+    #   5. Build and apply functions to reduce the tableau.
+    #   6. Respond with results.
     #
     def __init__(self, path="", debug=False):
         self._debug=debug
