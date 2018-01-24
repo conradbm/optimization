@@ -1,0 +1,21 @@
+Model:
+Sets:
+Creditcards /S, B, M/:interestrate,beginningBalance;
+Months /1..36/;
+Pij (Months, Creditcards):amountowed, payment;
+endsets
+
+data:
+interestRate = 0.05 .01 .015;
+beginningBalance = 20000 50000 40000;
+enddata
+
+min = @sum(Pij(i,j): payment(i,j));
+! min = minmonthlypayment
+! min @sum(Creditcards(i): @sum(months(j): payment(i,j))
+
+! @for( Months(j) : @sum(Creditcards): payment(i,j) <= minmonthlypayment);
+@for( Months(j) : @sum(Creditcards): payment(i,j) <= 5000);
+@for(Pij(i): amountowed(i,1)=begbalance(i)+interestrate(i)*begbalance(i)-payment(i,1));
+@for(Pij(i): @for (months(j)|j#ge#2: amountowed(i,j)=amountowed(i,j-1)+interestrate(i)*begbalance(i)-payment(i,j);
+@for(creditcards(i): amountowed(i,36)=0);
