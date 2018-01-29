@@ -1,0 +1,24 @@
+model:
+sets:
+! Define 2 a 3x20 empty set matrices; 
+cards/1..3/: interest, debt;
+months/1..36/;
+cardmonth(cards, months): X, L;
+endsets
+data:
+interest = 0.005, 0.01, 0.015;
+debt = 20000, 50000, 40000;
+enddata
+
+! Objective ;
+min = @sum(cardmonth(i,j): X(i,j));
+
+
+! monthly upper limit constraint ;
+@for(months(j):  @sum(cards(i): X(i,j)) <= 10000);
+! 1st month constraint ;
+@for(cardmonth(i,j)|j#EQ#1:debt(i)*(1+interest(i))-X(i,j)=L(i,j));
+! 2..20th month constraint ;
+@for(cardmonth(i,j)|j#GE#2:L(i,j-1)*(1+interest(i))-X(i,j)=L(i,j));
+! 20th month constraint;
+@for(cardmonth(i,j)|j#EQ#36:L(i,j)=0);
