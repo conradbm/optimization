@@ -1,0 +1,40 @@
+model:
+sets:
+fields   /1..3/:grade, maxAcre;
+products /1..4/:scale, cost, revenue, minQual;
+fieldproduct(fields, products): X;
+endsets
+
+data:
+! Fields data ;
+grade           = 9, 7.5, 7;
+maxAcre         = 40000,30000,50000;
+
+! Products data ;
+scale           = 0.5, 1, 1, 1;
+cost            = 0.2, .05, 0.3, 0.25;
+revenue         = 1.5, 0.75, 1.25, 1.25;
+minQual         = 7.5, 9, 8, 8;
+maxJuice        = 30000000;
+maxWhole        = 20000000;
+maxCannedSliced = 50000000;
+minDemand       = 10000000;
+enddata
+
+
+! Objective ;
+max = @sum(fieldproduct(i,j): revenue(j)*scale(j)*X(i,j) - cost(j)*scale(j)*X(i,j));
+
+! Field maximum constraint;
+@for(fields(i): @sum(products(j): X(i,j)) >= maxAcre(i));
+
+! Product minimum quality;
+@for(products(j): @sum(fields(i): X(i,j)*grade(i))-(@sum(fields(i):X(i,j)*minQual(j))) >= 0);
+
+! Product maximum constraint;
+@sum(fields(i): X(i,3) + X(i,4)) <= maxCannedSliced;
+@sum(fields(i): X(i,2)) <= maxWhole;
+@sum(fields(i): X(i,1)) <= maxJuice;
+
+! Product minimum constraint;
+@for(products(j): @sum(fields(i): X(i,j)) >= minDemand);
