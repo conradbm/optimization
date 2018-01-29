@@ -5,7 +5,7 @@
 Courses included in this library: </h3>
 
 <ul> 
-  <li> Linear Programming & Modeling </li>
+  <li> Linear Programming </li>
   <li> Simplex Algorithm </li>
   <li> Sensitivity Analysis </li>
   <li> Duality & Dual Simplex </li>
