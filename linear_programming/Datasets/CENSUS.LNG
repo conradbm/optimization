@@ -1,0 +1,15 @@
+ MODEL:
+   2]SETS:
+   3]STATE/1..3/:N,H;
+   4]SXS(STATE,STATE):TPROB;
+   5]ENDSETS
+   6]DATA:
+   7]H=1000,0,0;
+   8]TPROB=.959,.04,0,
+   9]0,.96,.03,
+  10]0,0,.95;
+  11]ENDDATA
+  12]@FOR(STATE(I):H(I)
+  13]+@SUM(STATE(K)|K#NE#I:N(K)*TPROB(K,I))=
+  14]N(I)*(1-TPROB(I,I)););
+ END

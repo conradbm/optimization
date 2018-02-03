@@ -1,0 +1,16 @@
+ MODEL:
+   1]
+   2]SETS:
+   3] STATE/ 1..2/:PI;
+   4] SXS( STATE, STATE):TPROB,MFP;
+   5]ENDSETS
+   6]DATA:
+   7]   TPROB = .9,.1,
+   8]           .2,.8;
+   9]ENDDATA
+  10]  @FOR( STATE( J)| J #LT# @SIZE( STATE):
+  11] PI( J) = @SUM( SXS( I, J): PI( I) * TPROB( I, J)););
+  12]  @SUM( STATE: PI) = 1;
+  13]@FOR(SXS(I,J):MFP(I,J)=
+  14]1+@SUM(STATE(K)|K#NE#J:TPROB(I,K)*MFP(K,J)););
+ END

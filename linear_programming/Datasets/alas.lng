@@ -1,0 +1,38 @@
+ 
+    MODEL:
+       
+MAX= 86 * R + 93 * U + 106 * P - 78 * A1 - 88 * A2 - 75 * T - 130 * 
+          L ;
+        A < 10000 ;
+        T < 11000 ;
+ L < 6000 ;
+        R > 5000 ;
+        U > 5000 ;
+        P > 5000 ;
+ SA = ( .04 * A1 + .01 * A2 ) / A ;
+        OA = ( 91 * A1 + 97 * A2 ) / A ;
+       A = A1 + A2 ;
+      P = LP + TP + AP ;
+      U = TU + AU ;
+      L = LP + LR ;
+      A = AP + AU + AR ;
+     T = TP + TU + TR ;
+      ( AR * OA + 83 * TR + 800 * LR ) / R > 90 ;
+       ( AP * OA + 83 * TP + 800 * LP ) / P > 94 ;
+      ( AU * OA + TU * 83 ) / U > 88 ;
+      ( SA * AR + .02 * TR ) / R < .03 ;
+      ( SA * AP + .02 * TP ) / P < .028 ;
+      ( SA * AU + .02 * TU ) / U < .03 ;
+      LP > 0 ;
+       TP > 0 ;
+      AP > 0 ;
+     TU > 0 ;
+       AU > 0 ;
+      LR > 0 ;
+     TR > 0 ;
+      AR > 0 ;
+     R = TR + AR + LR ;
+    END
+ 
+ 
+ 
