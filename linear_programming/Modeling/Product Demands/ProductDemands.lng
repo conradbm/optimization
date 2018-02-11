@@ -1,0 +1,59 @@
+! Project 2 -- Product Demands ;
+model:
+sets:
+weeks    /1..9/;
+products /1..3/:rev, dp;
+weekproduct(weeks, products): X, D, INV, B;
+endsets
+
+data:
+rev         = 1000, 750, 1500;
+dp          = 100, 300, 1000;
+D           = 10 240 270 
+              10 30 240  
+              70 90 310  
+              140 80 160  
+              200 140 360 
+              200 0 370  
+              100 90 200  
+              170 100 310 
+              0 0 0;       
+steel_cost  = 500;
+inv_cost    = 40;
+enddata
+
+! Objective ;
+max = (@sum(weekproduct(i,j): rev(j)*D(i,j) ) ) - steel_cost*(@sum(weekproduct(i,j):X(i,j) ) ) - inv_cost*(@sum(weekproduct(i,j):INV(i,j) ) ) - (@sum(products(j):dp(j)*(@sum(weeks(i): B(i,j) ) ) ) );
+
+! Constraint 1: Total tons of steel cannot exceed 500 per week ;
+@for(weeks(i): @sum(products(j): X(i,j)) <= 500);
+
+! Constraint 2: Supply must equal demand. 
+  We allow the input of our input=output system to allow backordering.
+  To enforce backordering, current production must account for potential backorders for the following week.
+  System diagram is shown in the following:
+ 
+                  + - - - - +
+  prod_i,j    --> |         | --> demand_i,j
+  inv_i,j     --> |  week_i | --> inv_i+1,j
+  back_i+1,j  --> |         | --> back_i,j
+                  + - - - - +;
+
+@for(weeks(i)|i#LE#8: @for(products(j): X(i,j) + INV(i,j) + B(i+1,j) = D(I,j) + INV(i+1,j) + B(i,j) ) );
+
+
+! Constraint 3: # Inventory on hand at start of week 1 must be zero. ;
+@for(products(j): INV(1,j)=0);
+
+! Constraint 4: # Invetory on hand at start of week 9 must be zero. ;
+@for(products(j): INV(9,j)=0);
+
+! Constraint 5: # Backorders at start of week 1 must be zero. ;
+@for(products(j): B(1,j)=0);
+
+! Constraint 6: # Backorders at start of week 9 must be zero. ;
+@for(products(j): B(9,j)=0);
+! Constraint 7: NNC;
+@for(weekproduct(i,j): X(i,j) >= 0 );
+@for(weekproduct(i,j): B(i,j) >= 0 );
+@for(weekproduct(i,j): INV(i,j) >= 0 );
