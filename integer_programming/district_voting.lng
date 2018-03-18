@@ -1,0 +1,35 @@
+model:
+! Majority Votes by District ;
+sets:
+city/1..8/:rep,dem;
+district/1..3/:v;
+city_district(city,district): Y;
+endsets
+
+data:
+rep = 80, 60, 40, 20, 40, 40, 70, 50;
+dem = 34, 44, 44, 24, 114, 64, 14, 44;
+M=350;
+enddata
+
+! Max # dem dominant votes in district j ;
+max = @sum(district(j): v(j));
+
+! Max # Votes per district;
+@for(district(j): @sum(city(i): (dem(i) + rep(i))*Y(i,j)) <= 350 );
+
+! Min # Votes per district;
+@for(district(j): @sum(city(i): (dem(i) + rep(i))*Y(i,j)) >= 150 );
+
+! Exactly 1 district can be assigned to a city;
+@for(city(i): @sum(district(j):Y(i,j)) = 1);
+
+! Ensure democratic dominant districts align with vj=1;
+@for(district(j): @sum(city(i): (rep(i) - dem(j))*Y(i,j)) <= M*(1-v(j)) );
+@for(district(j): @sum(city(i): (rep(i) - dem(j))*Y(i,j)) >= -M*(v(j)) );
+
+! Binary;
+@for(city_district(i,j): @bin(Y(i,j)) );
+@for(district(j): @bin(v(j)));
+
+! general integer @gin(...) ;
