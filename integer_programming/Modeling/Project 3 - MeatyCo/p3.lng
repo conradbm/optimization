@@ -1,0 +1,56 @@
+! Project 3 ;
+model:
+sets:
+div/1..5/: Y;
+shift/1..2/;
+div_shift(div,shift): X, S, cost, maxEmp, lbsPerEmp;
+
+endsets
+
+data:
+cost      = 2000, 2200, 2100, 2300, 1900, 2200, 2000, 2100, 2200, 2400;
+maxEmp    = 120, 100, 150, 120, 180, 150, 100, 75, 300, 250;
+lbsPerEmp = 3, 3, 2.9, 2.9, 3.1, 3.1, 3.2, 3.2, 3, 3;
+M         = 1000000;
+enddata
+
+! :::: Objective :::: ;
+min = @sum(div_shift(i,j): cost(i,j)*X(i,j)) +  14000*@sum(div(i): (1-Y(i))) + 30000*@sum(div_shift(i,j): (1-S(i,j)) );  
+
+! :::: Constraints :::: ;
+
+! 1) Div 1 must have more employees than div 4 ;
+@sum(shift(j): X(1,j)) >= @sum(shift(j): X(4,j));
+
+! 2) At least 3 Div must be open ;
+@sum(div(i): Y(i)) >= 3;
+
+! 3) If Div 4 is closed, then div 3 must be closed ;
+Y(4) >= Y(3);
+
+! 4) At least 2 of the first 3 Div must be open ;
+Y(1) + Y(2) + Y(3) >= 2;
+
+! 5) No evening shift can occur unless a day shift is occuring ;
+@sum(div(i): X(i,1)) >= @sum(div(i): X(i,2));
+
+! 6) Total employees for each Div and shift <= maxEmp ;
+@for(div_shift(i,j): X(i,j) <= maxEmp(i,j));
+
+! 7) Force Y(i) to be 0 if sum(X(i,j))>0 and 1 if sum(X(i,j))=0 ;
+@for(div(i): @sum(shift(j): X(i,j)) >= 1 - (1-Y(i)));
+@for(div(i): @sum(shift(j): X(i,j)) <= M*Y(i));
+
+! 8) Force S(i,j) to be 0 if X(i,j)>0 and 1 if X(i,j)=0 ;
+@for(div_shift(i,j): X(i,j) >= 1-(1-S(i,j)));
+@for(div_shift(i,j): X(i,j) <= M*S(i,j));
+! 9) demand;
+
+@sum(div(i): @sum(shift(j): lbsPerEmp(i,j)*X(i,j)) ) >= 2500;
+
+! 9) NNC ;
+@for(div_shift(i,j): X(i,j)>=0);
+
+! 10) INT ;
+@for(div(i): @bin(Y(i)) );
+@for(div_shift(i,j): @bin(S(i,j)));
