@@ -8,18 +8,19 @@ vars  = [a for a in f.atoms() if not str(a).isdigit()]
 
 f=3*x**2+x*y+y**2+x+2
 fgradient=[sympy.diff(f,var) for var in vars]
-xk=x0
+x0
 
-direction=[i.evalf(subs={'x':xk[0],’y’:xk[1]}) for i in fgradient]
+direction=[i.evalf(subs={'x':x0[0],’y’:x0[1]}) for i in fgradient]
 direction_lambda = [Symbol('lambda')*val for val in direction]
 
 xk = [direction[i]-direction_lambda[i] for i in range(len(direction))]
 flambda  = f.subs({x:xk[0], y:xk[1]})
 
 dflambda = flambda.diff()
+lam = solve(dflambda) #assuming only 1 lambda
+xk = [str(comp).replace("lambda",str(lam[0])) for comp in xk]
 
-eq1 = str(dflambda)
-eq1 = eq1.replace("lambda", "l")
-l=10
-
-eval(eq1) #evaluated the derivative of the original function substituted for lambda @ a value of lambda.
+#eq1 = str(dflambda)
+#eq1 = eq1.replace("lambda", "l")
+#l=10
+#eval(eq1) #evaluated the derivative of the original function substituted for lambda @ a value of lambda.
