@@ -1,9 +1,10 @@
 import sympy
 import numpy as np
-
 ## Consider a two-dimensional problem.
 
 # Initialization:
+print("Initialization ... \n")
+print
 x0 = np.random.randint(1,100, size=2)
 epsilon = 0.001
 k=0
@@ -11,17 +12,32 @@ x, y, lamda = sympy.symbols('x y lamda')
 f = 3*x**2+x*y+y**2+x+2 #worked
 f = (x**2)*(y**2) #worked
 f = x**3+(1/x*y) #broke, so soln returned on sympy.solve(dflamda)
+f = x**2/(1+x**2)**(y+1) #sattle
+
 fgradient = [f.diff(var) for var in (x, y)]   # calling diff as a method is convenient
 xk=[]
 xk.append(x0)
 k+=1
-print(xk)
 
+print ("Create hyperparameters ...  \n")
+print ("Initial Position:", x0)
+print ("Threshold:", x0)
+print ("Symbols:", x,y,lamda)
+print ("F(x,y):", f)
+print ("Gradient(F(x,y)):", fgradient)
+print ("\n")
+
+print ("Execute Procedure ...  \n")
 # Procedure:
-for i in range(1000):
+for i in range(5):
     
     direction = [i.subs({x: xk[k-1][0], y: xk[k-1][1]}) for i in fgradient]
+    
+    print("G(F(x_k-1[0], x_k-1[1]))=", direction)
+    
     xi = [xk[k-1][i] - lamda*direction[i] for i in range(len(direction))]
+    
+    print("Next Position: xi (lamda): ", xi)
     
     # If the new point is = the last point, or the new direction is <0,0> we approached a tangent = 0, so we are done.
     # break
@@ -29,21 +45,41 @@ for i in range(1000):
         break
     
     flamda  = f.subs({x:xi[0], y:xi[1]})
+    
+    print ("F(lamda)= ", flamda)
+    
     dflamda = flamda.diff()
-    soln = sympy.solve(dflamda)[0] #Assuming lambda has only 1 root, so it is the best 
+    
+    print("F'(lamda)= ",dflamda)
+    
+    soln = sympy.solve(dflamda) #Assuming lambda has only 1 root, so it is the best 
+    if len(soln) == 0:
+        print("No solution to F'(lambda)=0.")
+        break
+    
+    soln = soln[0]
+    print("F'(lamda)= 0 --> lambda=",soln)
+    
     xi = [i.subs({lamda:soln}).evalf() for i in xi]
+    
+    print("Next Position: xi (solved): ", xi)
+    
     xk.append(np.array(xi))
 
-    print("k-1: ",xk[k-1])
-    print("k: ",xk[k])
-    print("difference: ",abs(xk[k] - xk[k-1]))
+    print ("*** Calculate changes in step *** ")
+    print("Difference: |x[k-1] - x[k]| = ",abs(xk[k] - xk[k-1]))
     print ("Which elements are less than epsilon? ",abs(xk[k] - xk[k-1]) < epsilon)
     print("Are all less than epsilon? ", all(abs(xk[k] - xk[k-1]) < epsilon))
+    
     if all(abs(xk[k] - xk[k-1]) < epsilon):
+        print("Your change was sufficiently small, algorithm terminating.")
         break
     k= k + 1
+
+print ("*** Procedure Complete *** \n")
+
 local_optimum = xk[-1] #and if convex, it is global
-local_optimum
+print ("Local optimum at: ", local_optimum)
 # >> Soln: array([-0.181810432795123, 0.0908748033628853], dtype=object)
 
 
