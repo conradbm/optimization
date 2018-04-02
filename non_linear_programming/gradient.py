@@ -20,6 +20,10 @@ for i in range(1000):
     
     direction = [i.subs({x: xk[k-1][0], y: xk[k-1][1]}) for i in fgradient]
     xi = [xk[k-1][i] - lamda*direction[i] for i in range(len(direction))]
+    
+    # If the new point is = the last point, or the new direction is <0,0> we approached a tangent = 0, so we are done.
+    # break
+    
     flamda  = f.subs({x:xi[0], y:xi[1]})
     dflamda = flamda.diff()
     soln = sympy.solve(dflamda)[0] #Assuming lambda has only 1 root, so it is the best 
