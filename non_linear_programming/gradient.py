@@ -23,6 +23,8 @@ for i in range(1000):
     
     # If the new point is = the last point, or the new direction is <0,0> we approached a tangent = 0, so we are done.
     # break
+    if all([i==0 for i in direction]):
+        break
     
     flamda  = f.subs({x:xi[0], y:xi[1]})
     dflamda = flamda.diff()
