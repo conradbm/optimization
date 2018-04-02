@@ -8,7 +8,9 @@ x0 = np.random.randint(1,100, size=2)
 epsilon = 0.001
 k=0
 x, y, lamda = sympy.symbols('x y lamda')
-f = 3*x**2+x*y+y**2+x+2
+f = 3*x**2+x*y+y**2+x+2 #worked
+f = (x**2)*(y**2) #worked
+f = x**3+(1/x*y) #broke, so soln returned on sympy.solve(dflamda)
 fgradient = [f.diff(var) for var in (x, y)]   # calling diff as a method is convenient
 xk=[]
 xk.append(x0)
