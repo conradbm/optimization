@@ -1,18 +1,21 @@
 import sympy
 import numpy as np
+
 ## Consider a two-dimensional problem.
 
 # Initialization:
 print("Initialization ... \n")
 print
 x0 = np.random.randint(1,100, size=2)
+x0 = np.array([50,410])
 epsilon = 0.001
 k=0
 x, y, lamda = sympy.symbols('x y lamda')
 f = 3*x**2+x*y+y**2+x+2 #worked
 f = (x**2)*(y**2) #worked
 f = x**3+(1/x*y) #broke, so soln returned on sympy.solve(dflamda)
-f = x**2/(1+x**2)**(y+1) #sattle
+f = (x**3+1)*y
+f = (x**2)*(y**2)
 
 fgradient = [f.diff(var) for var in (x, y)]   # calling diff as a method is convenient
 xk=[]
@@ -21,7 +24,7 @@ k+=1
 
 print ("Create hyperparameters ...  \n")
 print ("Initial Position:", x0)
-print ("Threshold:", x0)
+print ("Threshold:", epsilon)
 print ("Symbols:", x,y,lamda)
 print ("F(x,y):", f)
 print ("Gradient(F(x,y)):", fgradient)
@@ -31,6 +34,10 @@ print ("Execute Procedure ...  \n")
 # Procedure:
 for i in range(5):
     
+
+    # create dictionary for each atom the value from xk-1 then feed
+
+
     direction = [i.subs({x: xk[k-1][0], y: xk[k-1][1]}) for i in fgradient]
     
     print("G(F(x_k-1[0], x_k-1[1]))=", direction)
@@ -44,6 +51,8 @@ for i in range(5):
     if all([i==0 for i in direction]):
         break
     
+    # create dictionary for each atom the value from xk-1 then feed
+
     flamda  = f.subs({x:xi[0], y:xi[1]})
     
     print ("F(lamda)= ", flamda)
@@ -53,11 +62,17 @@ for i in range(5):
     print("F'(lamda)= ",dflamda)
     
     soln = sympy.solve(dflamda) #Assuming lambda has only 1 root, so it is the best 
-    if len(soln) == 0:
-        print("No solution to F'(lambda)=0.")
-        break
     
-    soln = soln[0]
+    if len(soln) == 0:
+        print(soln)
+        print("F'(lambda)=",dflamda)
+        soln=dflamda
+        #print("No solution to F'(lambda)=0.")
+        #break
+    else:
+        soln=soln[0]
+    
+    #soln = soln[0]
     print("F'(lamda)= 0 --> lambda=",soln)
     
     xi = [i.subs({lamda:soln}).evalf() for i in xi]
@@ -80,7 +95,7 @@ print ("*** Procedure Complete *** \n")
 
 local_optimum = xk[-1] #and if convex, it is global
 print ("Local optimum at: ", local_optimum)
-# >> Soln: array([-0.181810432795123, 0.0908748033628853], dtype=object)
+
 
 
 """
