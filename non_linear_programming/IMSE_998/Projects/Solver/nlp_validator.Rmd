@@ -1,0 +1,23 @@
+---
+title: "NLP Validator"
+output: html_notebook
+---
+
+
+```{r}
+x=seq(-100,100, length=100)
+y=x
+z=outer(x,y, function(x,y) x*y*sin(x*y) )
+z=outer(x,y, function(x,y) 3*x**2 + x*y + x + y**2 + 2)
+
+
+#contour(x,y,f, nlevels=45)
+
+persp(x, y, z, theta = 30, phi = 30, expand = .5, col = "lightblue",
+      ltheta = 120, shade = 0.000001,
+      xlab = "X", ylab = "Y", zlab = "F(X,Y)", box=TRUE,ticktype = "detailed")
+#demo(persp)
+#?persp
+
+```
+
