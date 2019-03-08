@@ -1,0 +1,40 @@
+
+model:
+
+
+#################
+### Create DV ###
+#################
+### Create 6 lists of D.V
+sets:
+months/1..20/:paysaks, paybloom, paymacy, loansaks, loanbloom, loanmacy;             
+endsets
+
+#################
+### Objective ###
+#################
+### Iterative through each index (verb each list)
+min = @sum(months(t):paysaks(t)+paybloom(t)+paymacy(t));                              
+
+###################
+### Constraints ###
+###################
+
+### Each total paid <= 10000.
+@for(months(t):paysaks(t)+paybloom(t)+paymacy(t)<=10000);
+
+### 1st month pays off of month0 balance.
+20000*1.005-paysaks(1)=loansaks(1);
+50000*1.005-paysaks(1)=loanbloom(1);
+40000*1.005-paysaks(1)=loanmacy(1);
+
+### 2nd - 20th month generalization.
+@for(months(t)|t#GE#2:loansaks(t-1)*1.005-paysaks(t)=loansaks(t));
+@for(months(t)|t#GE#2:loanbloom(t-1)*1.010-paybloom(t)=loanbloom(t));
+@for(months(t)|t#GE#2:loanmacy(t-1)*1.015-paymacy(t)=loanmacy(t));
+
+### 20th month loans must be paid off.
+loansaks(20)=0;
+loanbloom(20)=0;
+loanmacy(20)=0;
+                                    

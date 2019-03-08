@@ -1,0 +1,5 @@
+max = 3*football+5*baseketball;
+
+football <= 4;
+2*basketball <=12;
+3*football + 2*basketball <= 18;
