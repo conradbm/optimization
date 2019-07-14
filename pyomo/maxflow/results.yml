@@ -1,0 +1,55 @@
+# ==========================================================
+# = Solver Results                                         =
+# ==========================================================
+# ----------------------------------------------------------
+#   Problem Information
+# ----------------------------------------------------------
+Problem: 
+- Lower bound: -inf
+  Upper bound: inf
+  Number of objectives: 1
+  Number of constraints: 16
+  Number of variables: 11
+  Sense: unknown
+# ----------------------------------------------------------
+#   Solver Information
+# ----------------------------------------------------------
+Solver: 
+- Status: ok
+  Message: CBC 2.10.1 optimal, objective 14; 1 iterations
+  Termination condition: optimal
+  Id: 0
+# ----------------------------------------------------------
+#   Solution Information
+# ----------------------------------------------------------
+Solution: 
+- number of solutions: 1
+  number of solutions displayed: 1
+- Gap: None
+  Status: optimal
+  Message: CBC 2.10.1 optimal, objective 14; 1 iterations
+  Objective:
+    total:
+      Value: 14
+  Variable:
+    f[A,C]:
+      Value: 3
+    f[A,D]:
+      Value: 8
+    f[B,C]:
+      Value: 3
+    f[C,D]:
+      Value: 2
+    f[C,E]:
+      Value: 4
+    f[D,E]:
+      Value: 2
+    f[D,Home]:
+      Value: 8
+    f[E,Home]:
+      Value: 6
+    f[Zoo,A]:
+      Value: 11
+    f[Zoo,B]:
+      Value: 3
+  Constraint: No values
