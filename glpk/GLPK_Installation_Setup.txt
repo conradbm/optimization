@@ -1,0 +1,8 @@
+GLPK Solver Setup.
+
+1. Download GLPK from http://winglpk.sourceforge.net/
+2. Point to the run the build script in the main folder.
+3. Append the w64 folder to the path variables.
+    $env:Path += ";C:\Users\blakeconrad\Documents\winglpk-4.65\glpk-4.65\w64"
+4. Run an example model using the correct syntax.
+    glpsol.exe -m C:\Users\blakeconrad\Documents\winglpk-4.65\glpk-4.65\examples\tsp.mod
