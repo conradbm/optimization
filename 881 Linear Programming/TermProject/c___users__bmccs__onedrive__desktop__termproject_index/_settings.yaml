@@ -1,0 +1,35 @@
+---
+name: "c___users__bmccs__onedrive__desktop__termproject_index"
+fs:
+  url: "C:\\\\Users\\\\bmccs\\\\OneDrive\\\\Desktop\\\\TermProject"
+  update_rate: "15m"
+  excludes:
+  - "*/~*"
+  json_support: false
+  filename_as_id: false
+  add_filesize: true
+  remove_deleted: true
+  add_as_inner_object: false
+  store_source: false
+  index_content: true
+  attributes_support: false
+  raw_metadata: false
+  xml_support: false
+  index_folders: true
+  lang_detect: false
+  continue_on_error: false
+  pdf_ocr: true
+  ocr:
+    language: "eng"
+    enabled: true
+    pdf_strategy: "ocr_and_text"
+  path: "C:\\\\Users\\\\bmccs\\\\OneDrive\\\\Desktop\\\\sophia\\\\rsc\\\\Tesseract-OCR"
+  data_path: "C:\\\\Users\\\\bmccs\\\\OneDrive\\\\Desktop\\\\sophia\\\\rsc\\\\Tesseract-OCR\\\\tessdata"
+  output_type: "txt"
+  follow_symlinks: false
+elasticsearch:
+  nodes:
+  - url: "http://127.0.0.1:9200"
+  bulk_size: 100
+  flush_interval: "5s"
+  byte_size: "10mb"

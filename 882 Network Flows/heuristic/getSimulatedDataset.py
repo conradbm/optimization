@@ -35,11 +35,11 @@ def printData(mat):
     for rowIndex in range(matrix.shape[0]):
         for colIndex in range(matrix.shape[1]):
             print("from {} to {} distance {}".format(rowIndex, colIndex, mat[rowIndex, colIndex]))
-#printData(matrix)
+printData(matrix)
             
 def getRandomCity(mat):
     return random.randint(0, mat.shape[0]-1)
-#getRandomCity(matrix)
+getRandomCity(matrix)
 
 
 def getRandomPath(mat, verbose=False):
